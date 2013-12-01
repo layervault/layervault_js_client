@@ -1,0 +1,24 @@
+{
+  "name": "layervault",
+  "version": "0.0.1",
+  "description": "LayerVault API client",
+  "keywords": [
+    "layervault",
+    "design",
+    "api",
+    "client"
+  ],
+  "homepage": "https://developers.layervault.com",
+  "author": {
+    "name": "Ryan LeFevre",
+    "email": "ryan@layervault.com",
+    "url": "http://github.com/meltingice"
+  },
+  "dependencies": {
+    "rsvp": "*",
+    "oauth": "~ 0.9.10"
+  },
+  "devDependencies": {
+    "karma": "~ 0.10.6"
+  }
+}

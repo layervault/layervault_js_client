@@ -9,6 +9,7 @@
     "client"
   ],
   "homepage": "https://developers.layervault.com",
+  "respository": "git@github.com:layervault/layervault_js_client.git",
   "author": {
     "name": "Ryan LeFevre",
     "email": "ryan@layervault.com",
@@ -16,7 +17,8 @@
   },
   "dependencies": {
     "rsvp": "*",
-    "oauth": "~ 0.9.10"
+    "request": "~ 2.27.0",
+    "coffee-script": "~ 1.6.3"
   },
   "devDependencies": {
     "karma": "~ 0.10.6"

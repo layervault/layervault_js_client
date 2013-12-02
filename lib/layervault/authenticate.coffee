@@ -15,6 +15,6 @@ module.exports = class Authenticate
     , (error, resp, body) =>
       return cb(error, null) if error?
 
-      @config.accessToken = resp
+      @config.accessToken = resp.access_token
       cb(null, @config.accessToken)
     , {auth: false, excludeApiPath: true})

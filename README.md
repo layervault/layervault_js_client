@@ -5,20 +5,24 @@ NodeJS client for accessing the LayerVault API.
 ## Usage
 
 ``` coffeescript
-{Configuration, Client} = require('layervault')
+LayerVault = require('layervault')
 
 # Configure
-config = new Configuration ->
+config = new LayerVault.Configuration ->
   @oauthKey = 'abc123'
   @oauthSecret = 'foobar'
-  @accessToken = 'sloths567'
+  @accessToken = 'sloths567' # optional
 
 # Create the client
-lv = new Client(config)
+client = new LayerVault.Client(config)
 
 # If configured without an access token, you will need
 # to authenticate and retrieve one.
-lv.auth.perform 'username', 'password', ->
+client.auth.perform 'username', 'password', (err, resp) ->
+  client.me (err, user) ->
+    console.log user
+    org = user.organizations[0]
 
-  # Perform an API call
-  lv.getOrganization('layervault').then (org) ->
+    client.organization(org).node org.projects[0], (err, node) ->
+      console.log node.path
+```

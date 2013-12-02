@@ -5,7 +5,7 @@ module.exports = class Authenticate
     @tokenEndpoint = '/auth/token'
     @api = new API(@config)
 
-  perform: (username, password, cb = ->) ->
+  withPassword: (username, password, cb = ->) ->
     @api.post('/oauth/token',
       grant_type: 'password'
       username: username

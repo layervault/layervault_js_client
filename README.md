@@ -17,8 +17,8 @@ config = new LayerVault.Configuration ->
 client = new LayerVault.Client(config)
 
 # If configured without an access token, you will need
-# to authenticate and retrieve one.
-client.auth.perform 'username', 'password', (err, resp) ->
+# to authenticate and retrieve one. Here's the password flow:
+client.auth.withPassword 'username', 'password', (err, resp) ->
   client.me (err, user) ->
     console.log user
     org = user.organizations[0]

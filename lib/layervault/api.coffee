@@ -59,4 +59,5 @@ module.exports = class API
     path = @config.apiBase
     path += @config.apiPath unless options.excludeApiPath
     path += endpoint + ".json"
+
     return path

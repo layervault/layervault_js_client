@@ -18,7 +18,8 @@
   "dependencies": {
     "rsvp": "*",
     "request": "~ 2.27.0",
-    "coffee-script": "~ 1.6.3"
+    "coffee-script": "~ 1.6.3",
+    "needle": "~ 0.6.3"
   },
   "devDependencies": {
     "karma": "~ 0.10.6"

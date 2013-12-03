@@ -58,6 +58,9 @@ module.exports = class API
   apiUrl: (endpoint, options) ->
     path = @config.apiBase
     path += @config.apiPath unless options.excludeApiPath
-    path += endpoint + ".json"
+    path += endpoint
+    
+    return path if options.format is false
+    path += if typeof format is "string" then ".#{format}" else ".json"
 
     return path

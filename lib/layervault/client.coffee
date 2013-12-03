@@ -1,6 +1,7 @@
 Authenticate = require './authenticate'
 API = require './api'
 
+Node = require './node'
 Organization = require './nodes/organization'
 
 module.exports = class Client

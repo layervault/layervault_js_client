@@ -23,6 +23,6 @@ client.auth.withPassword 'username', 'password', (err, resp) ->
     console.log user
     org = user.organizations[0]
 
-    client.organization(org).node org.projects[0], (err, node) ->
-      console.log node.path
+    client.organization(org).project(org.projects[0]).get (err, project) ->
+      console.log project
 ```

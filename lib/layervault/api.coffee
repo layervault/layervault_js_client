@@ -31,9 +31,32 @@ module.exports = class API
       return cb(null, JSON.parse(body)) if 200 <= response.statusCode < 300
       return cb(JSON.parse(body), null)
 
+  delete: (endpoint, data = {}, cb = (->), options = {}) ->
+    headers = { 'Authorization': "Bearer #{@config.accessToken}" }
+    options =
+      method: 'DELETE'
+      url: @apiUrl(endpoint, options)
+      headers: headers
+      form: data
+
+    request options, (error, response, body) ->
+      return cb(null, JSON.parse(body)) if 200 <= response.statusCode < 300
+      return cb(JSON.parse(body), null)
+
+  put: (endpoint, data = {}, cb = (->), options = {}) ->
+    headers = { 'Authorization': "Bearer #{@config.accessToken}" }
+    options =
+      method: 'PUT'
+      url: @apiUrl(endpoint, options)
+      headers: headers
+      form: data
+
+    request options, (error, response, body) ->
+      return cb(null, JSON.parse(body)) if 200 <= response.statusCode < 300
+      return cb(JSON.parse(body), null)
+
   apiUrl: (endpoint, options) ->
     path = @config.apiBase
     path += @config.apiPath unless options.excludeApiPath
     path += endpoint + ".json"
-
     return path

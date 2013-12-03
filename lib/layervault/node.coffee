@@ -15,3 +15,11 @@ module.exports = class Node
     @initialize()
 
   initialize: ->
+
+  project: (name) -> new Project(@api, @, name)
+  folder: (path...) ->  new Folder(@api, @, path)
+  file: (path...) -> new File(@api, @, path)
+
+Project = require './nodes/project'
+Folder = require './nodes/folder'
+File = require './nodes/file'

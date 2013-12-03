@@ -1,4 +1,4 @@
 Node = require '../node'
 
-module.exports = class Organization extends Node
+module.exports = class File extends Node
   get: (cb) -> @api.get(@path, {}, cb.bind(@))

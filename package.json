@@ -16,8 +16,6 @@
     "url": "http://github.com/meltingice"
   },
   "dependencies": {
-    "rsvp": "*",
-    "request": "~ 2.27.0",
     "coffee-script": "~ 1.6.3",
     "needle": "~ 0.6.3"
   },

@@ -37,14 +37,9 @@ module.exports = class File extends Node
         return @callback(err, null) if err
 
         location = resp.headers.location
-        parsedUrl = url.parse(location, true)
-        parsedUrl.query.access_token = @api.config.accessToken
-        parsedUrl.query.file_size = fs.statSync(@localPath).size
-        
-        delete parsedUrl.search
-        parsedUrl = url.format(parsedUrl)
+        location += "&access_token=#{@api.config.accessToken}"
 
-        needle.post parsedUrl, {headers: {'Authorization': @api.config.accessToken}}, (err, resp, body) =>
+        needle.post location, {headers: {'Authorization': @api.config.accessToken}}, (err, resp, body) =>
           delete @localPath
           delete @contentType
           @callback(err, body)

@@ -5,7 +5,7 @@ url = require 'url'
 
 module.exports = class UploadService
   S3_ENDPOINT = 'https://omnivore-scratch.s3.amazonaws.com'
-  
+
   constructor: (@file, options) ->
     {@localPath, @contentType} = options
     @api = @file.api
@@ -21,8 +21,7 @@ module.exports = class UploadService
     s.on 'data', (d) -> md5.update(d)
     s.on 'end', -> cb md5.digest('hex')
 
-  getAwsCredentials: (md5, cb) =>
-    @api.put @file.path, md5: md5, cb, format: false
+  getAwsCredentials: (md5, cb) => @api.put @file.path, md5: md5, cb
 
   sendFileToS3: (resp, cb) =>
     options = resp

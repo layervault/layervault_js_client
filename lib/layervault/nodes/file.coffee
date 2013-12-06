@@ -1,8 +1,14 @@
 Node = require '../node'
 UploadService = require '../services/upload'
 
+Revision = require './revision'
+
 module.exports = class File extends Node
-  get: (cb) -> @api.get @path, {}, cb.bind(@)
+  relations:
+    revisions: Revision
+
+  get: (cb) -> @api.get @path, {}, @buildRelations(cb)
+
   create: (options, cb) ->
     service = new UploadService(@, options)
     service.perform cb.bind(@)

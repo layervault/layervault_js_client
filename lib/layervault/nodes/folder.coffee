@@ -7,4 +7,4 @@ module.exports = class Folder extends Node
   move: (to, cb) -> @api.post("#{@nodePath}/move", { to: to }, cb.bind(@))
   rename: @move
 
-  color: (color, cb) -> @api.put("#{@nodePath}/color", { color: color }, cb.bind(@))
+  changeColor: (color, cb) -> @api.put("#{@nodePath}/color", { color: color }, cb.bind(@))

@@ -1,17 +1,19 @@
 module.exports = class Node
-  constructor: (@api, parent, nodeName) ->
-    if Array.isArray(nodeName)
+  constructor: (@api, parent, nodePath) ->
+    if Array.isArray(nodePath)
       components = []
-      for node in nodeName
+      for node in nodePath
         components.push if typeof node is "object" then encodeURIComponent(node.name) else encodeURIComponent(node)
 
-      @nodeName = components.join('/')
-    else if typeof nodeName is "object"
-      @nodeName = encodeURIComponent(nodeName.name)
+      nodePath = components.join('/')
+    else if typeof nodePath is "object"
+      nodePath = encodeURIComponent(nodePath.name)
     else
-      @nodeName = encodeURIComponent(nodeName)
+      nodePath = encodeURIComponent(nodePath)
 
-    @path = parent.path + "/#{@nodeName}"
+    @path = parent.path + "/#{nodePath}"
+    @nodeName = nodePath.match(/([^\/]+)$/)[1]
+
     @initialize()
 
   initialize: ->

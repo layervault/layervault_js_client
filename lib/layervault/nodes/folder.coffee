@@ -5,4 +5,5 @@ module.exports = class Folder extends Node
   create: (cb) -> @api.post(@path, {}, cb.bind(@))
   delete: (cb) -> @api.delete(@path, {}, cb.bind(@))
   move: (to, cb) -> @api.post("#{@path}/move", { to: to }, cb.bind(@))
+  rename: @move
   color: (color, cb) -> @api.put("#{@path}/color", { color: color }, cb.bind(@))

@@ -8,4 +8,4 @@ module.exports = class Project extends Node
   move: (to, cb) -> @api.post("#{@path}/move", { to: to }, cb.bind(@))
   rename: @move
 
-  color: (color, cb) -> @api.put("#{@path}/color", { color: color }, cb.bind(@))
+  changeColor: (color, cb) -> @api.put("#{@path}/color", { color: color }, cb.bind(@))

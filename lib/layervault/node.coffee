@@ -41,15 +41,30 @@ module.exports = class Node
     (err, resp) =>
       return cb.call(@, err, resp) if err
 
-      for own relation, klass of @relations
+      for own relation, opts of @relations
         continue unless resp[relation]?
 
         if Array.isArray(resp[relation])
-          resp[relation] = resp[relation].map (r) -> (new klass(api, r.full_url)).withData(r)
+          resp[relation] = resp[relation].map (r) -> 
+            (new opts.klass(api, @, r[opts.pathProperty])).withData(r)
+          , @
         else
-          resp[relation] = (new klass(api, resp[relation].full_url)).withData(resp[relation])
+          resp[relation] = (new opts.klass(api, @, resp[relation][opts.pathProperty])).withData(resp[relation])
 
       @withData(resp)
+      cb.call(@, err, resp)
+
+  buildRelationsArray: (prop, opts, cb) ->
+    api = @api
+
+    (err, resp) =>
+      return cb.call(@, err, resp) if err
+
+      resp = resp.map (r) ->
+        (new opts.klass(api, @, r[opts.pathProperty])).withData(r)
+      , @
+
+      @withData prop: resp
       cb.call(@, err, resp)
 
   project: (name) -> new Project(@api, @, name)

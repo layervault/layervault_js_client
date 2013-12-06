@@ -1,4 +1,10 @@
 Node = require '../node'
+Project = require './project'
 
 module.exports = class Organization extends Node
-  get: (cb) -> @api.get(@path, {}, cb.bind(@))
+  relations:
+    projects:
+      klass: Project
+      pathProperty: 'name'
+
+  get: (cb) -> @api.get @path, {}, @buildRelations(cb)

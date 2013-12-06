@@ -3,8 +3,6 @@ Project = require './project'
 
 module.exports = class Organization extends Node
   relations:
-    projects:
-      klass: Project
-      pathProperty: 'name'
+    projects: Project
 
-  get: (cb) -> @api.get @path, {}, @buildRelations(cb)
+  get: (cb) -> @api.get @nodePath, {}, @buildRelations(cb)

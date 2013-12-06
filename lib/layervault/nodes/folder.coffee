@@ -1,10 +1,10 @@
 Node = require '../node'
 
 module.exports = class Folder extends Node
-  get: (cb) -> @api.get(@path, {}, cb.bind(@))
-  create: (cb) -> @api.post(@path, {}, cb.bind(@))
-  delete: (cb) -> @api.delete(@path, {}, cb.bind(@))
-  move: (to, cb) -> @api.post("#{@path}/move", { to: to }, cb.bind(@))
+  get: (cb) -> @api.get(@nodePath, {}, cb.bind(@))
+  create: (cb) -> @api.post(@nodePath, {}, cb.bind(@))
+  delete: (cb) -> @api.delete(@nodePath, {}, cb.bind(@))
+  move: (to, cb) -> @api.post("#{@nodePath}/move", { to: to }, cb.bind(@))
   rename: @move
-  
-  color: (color, cb) -> @api.put("#{@path}/color", { color: color }, cb.bind(@))
+
+  color: (color, cb) -> @api.put("#{@nodePath}/color", { color: color }, cb.bind(@))

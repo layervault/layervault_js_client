@@ -18,3 +18,11 @@ module.exports = class File extends Node
   rename: @move
 
   revisions: (cb) -> @api.get("#{@nodePath}/revisions", {}, @buildRelationsArray('revisions', @relations.revisions, cb))
+  previews: (args...) ->
+    if args.length == 1
+      cb = args[0]
+      opts = {}
+    else
+      [opts, cb] = args
+
+    @api.get("#{@nodePath}/previews", opts, cb.bind(@))

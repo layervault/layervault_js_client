@@ -6,6 +6,8 @@ url = require 'url'
 Node = require '../node'
 
 module.exports = class File extends Node
+  S3_ENDPOINT = 'https://omnivore-scratch.s3.amazonaws.com'
+
   get: (cb) -> @api.get(@path, {}, cb.bind(@))
   create: (options, cb) ->
     {@localPath, @contentType} = options
@@ -28,7 +30,7 @@ module.exports = class File extends Node
       content_type: @contentType
       file: @localPath
 
-    needle.post 'https://omnivore-scratch.s3.amazonaws.com', 
+    needle.post S3_ENDPOINT, 
       options,
       { multipart: true },
       (err, resp, body) =>

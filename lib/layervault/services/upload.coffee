@@ -1,7 +1,6 @@
-crypto = require 'crypto'
-fs = require 'fs'
-needle = require 'needle'
-url = require 'url'
+crypto  = require 'crypto'
+fs      = require 'fs'
+needle  = require 'needle'
 
 module.exports = class UploadService
   S3_ENDPOINT = 'https://omnivore-scratch.s3.amazonaws.com'
@@ -39,5 +38,6 @@ module.exports = class UploadService
         location = resp.headers.location
         location += "&access_token=#{@api.config.accessToken}"
 
-        needle.post location, {headers: {'Authorization': @api.config.accessToken}}, (err, resp, body) =>
-          cb(err, body)
+        needle.post location, {
+          headers: { 'Authorization': @api.config.accessToken }
+        }, (err, resp, body) => cb(err, body)

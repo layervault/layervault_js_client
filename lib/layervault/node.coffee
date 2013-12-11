@@ -46,7 +46,7 @@ module.exports = class Node
 
         if Array.isArray(resp[relation])
           resp[relation] = resp[relation].map (r) -> 
-            (new klass(api, @, (r.name || r.revision_number))).withData(r)
+            (new klass(api, @, r.name)).withData(r)
           , @
         else
           resp[relation] = (new klass(api, @, resp[relation][opts.pathProperty])).withData(resp[relation])
@@ -61,16 +61,24 @@ module.exports = class Node
       return cb.call(@, err, resp) if err
 
       resp = resp.map (r) ->
-        (new klass(api, @, (r.name || r.revision_number))).withData(r)
+        (new klass(api, @, r.name)).withData(r)
       , @
 
       @withData prop: resp
       cb.call(@, err, resp)
 
+  parsePreviewOptions: (args) ->
+    if args.length == 1
+      [{}, args[0]]
+    else
+      args
+
   project: (name) -> new Project(@api, @, name)
   folder: (path...) ->  new Folder(@api, @, path)
   file: (path...) -> new File(@api, @, path)
+  revision: (path...) -> new Revision(@api, @, path)
 
 Project = require './nodes/project'
 Folder = require './nodes/folder'
 File = require './nodes/file'
+Revision = require './nodes/revision'

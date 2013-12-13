@@ -12,6 +12,7 @@ module.exports = class UploadService
   perform: (cb) ->
     @calculateMd5 (md5) => 
       @getAwsCredentials md5, (err, resp) =>
+        return cb(err, null) if err
         @sendFileToS3 resp, cb
 
   calculateMd5: (cb) ->
@@ -20,7 +21,7 @@ module.exports = class UploadService
     s.on 'data', (d) -> md5.update(d)
     s.on 'end', -> cb md5.digest('hex')
 
-  getAwsCredentials: (md5, cb) => @api.put @file.path, md5: md5, cb
+  getAwsCredentials: (md5, cb) => @api.put @file.nodePath, md5: md5, cb
 
   sendFileToS3: (resp, cb) =>
     options = resp

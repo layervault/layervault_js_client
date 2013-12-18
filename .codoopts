@@ -1,0 +1,9 @@
+--name       "layervault"
+--readme     README.md
+--title      "LayerVault JS Client Documentation"
+--private
+--quiet
+--output     ./doc
+./lib
+-
+LICENSE

@@ -1,5 +1,5 @@
 needle  = require 'needle'
-Md5Service = require '../services/md5'
+Md5Service = require './md5'
 
 module.exports = class UploadService
   S3_ENDPOINT = 'https://omnivore-scratch.s3.amazonaws.com'

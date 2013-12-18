@@ -82,7 +82,7 @@ client.organization('layervault').file('Test/Stuff', 'NewFile.psd').create({
 
 ## Author
 
-Ryan LeFevre, ryan@layervault.com
+Ryan LeFevre - [GitHub](https://github.com/meltingice), [Twitter](https://twitter.com/meltingice), [Email](mailto:ryan@layervault.com)
 
 ## License
 

@@ -15,12 +15,6 @@ module.exports = class UploadService
         return cb(err, null) if err
         @sendFileToS3 resp, cb
 
-  calculateMd5: (cb) ->
-    md5 = crypto.createHash 'md5'
-    s = fs.ReadStream(@localPath)
-    s.on 'data', (d) -> md5.update(d)
-    s.on 'end', -> cb md5.digest('hex')
-
   getAwsCredentials: (md5, cb) => @api.put @file.nodePath, md5: md5, cb
 
   sendFileToS3: (resp, cb) =>

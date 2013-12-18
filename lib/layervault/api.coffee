@@ -2,6 +2,9 @@ needle = require 'needle'
 qs = require 'querystring'
 
 # API request helper class. Relies on needle for issuing HTTP requests.
+# Formats callback arguments such that they are always called with (error, response).
+# If there is an error, then the error parameter will have data. Otherwise, it will be
+# null.
 module.exports = class API
   # Construct a new API class
   #

@@ -1,6 +1,5 @@
-crypto  = require 'crypto'
-fs      = require 'fs'
 needle  = require 'needle'
+Md5Service = require '../services/md5'
 
 module.exports = class UploadService
   S3_ENDPOINT = 'https://omnivore-scratch.s3.amazonaws.com'
@@ -8,9 +7,10 @@ module.exports = class UploadService
   constructor: (@file, options) ->
     {@localPath, @contentType} = options
     @api = @file.api
+    @md5 = new Md5Service(@localPath)
 
   perform: (cb) ->
-    @calculateMd5 (md5) => 
+    @md5.calculate (md5) => 
       @getAwsCredentials md5, (err, resp) =>
         return cb(err, null) if err
         @sendFileToS3 resp, cb

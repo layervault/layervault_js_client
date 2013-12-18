@@ -25,9 +25,10 @@ var client = new LayerVault.Client(config);
 ``` js
 // If configured without an access token, you will need
 // to authenticate and retrieve one. Here's the password flow:
-client.auth.withPassword('username', 'password', function (err, accessToken) {
+client.auth.withPassword('username', 'password', function (err, accessToken, refreshToken) {
   // We are now logged in. The configuration is automatically updated
-  // with the access token. We can store it somewhere permanent if needed.
+  // with the access token and refresh token. We can store them somewhere
+  // persistent if needed.
 });
 ```
 

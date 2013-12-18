@@ -14,7 +14,10 @@ module.exports = class Authenticate
       client_secret: @config.oauthSecret
     , (error, resp, body) =>
       return cb(error, null) if error?
+      console.log resp
 
       @config.accessToken = resp.access_token
-      cb(null, @config.accessToken)
+      @config.refreshToken = resp.refresh_token
+      
+      cb(null, @config.accessToken, @config.refreshToken)
     , {auth: false, excludeApiPath: true})

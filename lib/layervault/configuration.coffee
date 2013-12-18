@@ -3,6 +3,7 @@ module.exports = class Configuration
     @oauthKey = null
     @oauthSecret = null
     @accessToken = null
+    @refreshToken = null
     @apiBase = "https://api.layervault.com"
     @apiPath = "/api/v1"
 

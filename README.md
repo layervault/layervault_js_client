@@ -2,27 +2,42 @@
 
 NodeJS client for accessing the LayerVault API.
 
+## Configuration
+
+``` js
+var LayerVault = require('layervault');
+
+// Configure
+var config = new LayerVault.Configuration(function () {
+  this.oauthKey = 'abc123'
+  this.oauthSecret = 'foobar'
+  this.accessToken = 'sloths567' // optional, if you have it
+});
+
+// Create the client
+var client = new LayerVault.Client(config);
+```
+
 ## Usage
 
-``` coffeescript
-LayerVault = require('layervault')
+``` js
+// If configured without an access token, you will need
+// to authenticate and retrieve one. Here's the password flow:
+client.auth.withPassword('username', 'password', function (err, accessToken) {
+  // We are now logged in. The configuration is automatically updated
+  // with the access token.
 
-# Configure
-config = new LayerVault.Configuration ->
-  @oauthKey = 'abc123'
-  @oauthSecret = 'foobar'
-  @accessToken = 'sloths567' # optional
+  // We can retrieve information about the logged in user now.
+  client.me(function (err, user) {
+    console.log(user);
 
-# Create the client
-client = new LayerVault.Client(config)
+    // Get the user's primary organization
+    var org = user.organizations[0];
 
-# If configured without an access token, you will need
-# to authenticate and retrieve one. Here's the password flow:
-client.auth.withPassword 'username', 'password', (err, resp) ->
-  client.me (err, user) ->
-    console.log user
-    org = user.organizations[0]
-
-    client.organization(org).project(org.projects[0]).get (err, project) ->
-      console.log project
+    // Get the first project in the organization
+    client.organization(org).project(org.projects[0]).get(function (err, project) {
+      console.log(project);
+    });
+  });
+});
 ```

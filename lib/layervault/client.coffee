@@ -10,5 +10,5 @@ module.exports = class Client
     @api = new API(@config)
     @nodePath = ''
 
-  me: (cb) -> @api.get '/me', {}, cb
+  me: (cb) -> @api.get '/me', {}, cb.bind(@)
   organization: (name) -> new Organization(@api, @, name)

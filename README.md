@@ -79,3 +79,11 @@ client.organization('layervault').file('Test/Stuff', 'NewFile.psd').create({
   console.log(resp);
 });
 ```
+
+## Author
+
+Ryan LeFevre, ryan@layervault.com
+
+## License
+
+layervault-js-client is available under the MIT license. See the LICENSE file for more info.

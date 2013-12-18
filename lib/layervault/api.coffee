@@ -13,6 +13,7 @@ module.exports = class API
     needle.get url, {
       headers: headers
     }, (error, response, body) ->
+      console.log body
       return cb(null, body) if 200 <= response.statusCode < 300
       return cb(body, null)
 

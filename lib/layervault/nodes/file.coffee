@@ -13,7 +13,7 @@ module.exports = class File extends Node
     service = new UploadService(@, options)
     service.perform cb.bind(@)
 
-  delete: (cb) -> @api.delete(@nodePath, {}, cb.bind(@))
+  delete: (cb) -> @api.delete @nodePath, {}, cb.bind(@)
   move: (to, cb) -> @api.post("#{@nodePath}/move", { to: to }, cb.bind(@))
   rename: @move
 

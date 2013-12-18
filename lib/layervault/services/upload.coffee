@@ -39,6 +39,4 @@ module.exports = class UploadService
         location = resp.headers.location
         location += "&access_token=#{@api.config.accessToken}"
 
-        needle.post location, {
-          headers: { 'Authorization': @api.config.accessToken }
-        }, (err, resp, body) => cb(err, body)
+        needle.post location, {}, (err, resp, body) => cb(err, body)

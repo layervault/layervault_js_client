@@ -86,4 +86,4 @@ Ryan LeFevre - [GitHub](https://github.com/meltingice), [Twitter](https://twitte
 
 ## License
 
-layervault-js-client is available under the MIT license. See the LICENSE file for more info.
+Available under the MIT license. See the LICENSE file for more info.

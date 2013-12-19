@@ -1,9 +1,19 @@
 crypto  = require 'crypto'
 fs      = require 'fs'
 
+# Simple service that, given a path to a file, calculates
+# its MD5.
 module.exports = class Md5Service
+  # Constructs a new Md5Service.
+  #
+  # @param [String] file The path to the file.
   constructor: (@file) ->
 
+  # Runs the MD5 calculation by reading the file with a ReadStream,
+  # and passes the chunks to our MD5 function. This is done
+  # asynchronously. The resulting MD5 is given in hex form.
+  #
+  # @param [Function] cb The finished callback.
   calculate: (cb) ->
     md5 = crypto.createHash 'md5'
     s = fs.ReadStream(@file)

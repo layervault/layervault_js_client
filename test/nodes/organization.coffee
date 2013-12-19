@@ -1,7 +1,7 @@
 expect  = require 'expect.js'
 nock    = require 'nock'
 
-LayerVault = require '../lib/layervault'
+LayerVault = require '../../lib/layervault'
 
 describe 'Organization', ->
   before ->
@@ -15,7 +15,7 @@ describe 'Organization', ->
     beforeEach ->
       nock(@config.apiBase)
         .get("#{@config.apiPath}#{@organization.nodePath}")
-        .reply(200, require('./fixtures/organization/get'))
+        .reply(200, require('../fixtures/organization/get'))
 
     it 'does not error', (done) ->
       @organization.get (err, resp) ->

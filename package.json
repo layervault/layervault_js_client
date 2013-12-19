@@ -21,6 +21,11 @@
   },
   "devDependencies": {
     "mocha": "~ 1.15.1",
+    "expect.js": "~ 0.2.0",
     "codo": "~ 2.0.2"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script",
+    "test-watch": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script --watch"
   }
 }

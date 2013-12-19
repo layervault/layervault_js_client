@@ -19,6 +19,13 @@ describe 'Client', ->
     expect(client.api).to.be.an('object')
     expect(client.nodePath).to.be('')
 
+  it 'can create a new Organization', ->
+    client = new LayerVault.Client(@config)
+    org = client.organization('foobar')
+
+    expect(org).to.be.an('object')
+    expect(org.get).to.be.a('function')
+
   describe 'can fetch the current user', ->
     before ->
       @client = new LayerVault.Client(@config)

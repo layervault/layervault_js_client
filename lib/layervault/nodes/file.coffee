@@ -77,11 +77,11 @@ module.exports = class File extends Node
   # Retrieves all of the previews for the latest revision of this file.
   #
   # @overload previews(cb)
-  #   Fetches the preview in its original state.
+  #   Fetches the previews in their original state.
   #   @param [Function] cb The finished callback.
   #
   # @overload previews(opts, cb)
-  #   Fetches the preview and sends transformations to Imgix.
+  #   Fetches the previews and sends transformations to Imgix.
   #   @param [Object] opts Hash of options to pass to Imgix for formatting the preview.
   #   @param [Function] cb The finished callback.
   previews: (args...) ->

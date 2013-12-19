@@ -19,6 +19,9 @@ module.exports = class Folder extends Node
 
   # Moves this folder to a new location. The new location must be relative to the
   # organization root.
+  #
+  # @param [String] to The new path for the folder relative to the organization root.
+  # @param [Function] cb The finished callback.
   move: (to, cb) -> @api.post("#{@nodePath}/move", { to: to }, cb.bind(@))
 
   # @see Folder#move

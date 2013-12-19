@@ -20,7 +20,7 @@
     "needle": "~ 0.6.3"
   },
   "devDependencies": {
-    "karma": "~ 0.10.6",
+    "mocha": "~ 1.15.1",
     "codo": "~ 2.0.2"
   }
 }

@@ -23,7 +23,6 @@ module.exports = class Authenticate
       client_secret: @config.oauthSecret
     , (error, resp, body) =>
       return cb(error, null) if error?
-      console.log resp
 
       @config.accessToken = resp.access_token
       @config.refreshToken = resp.refresh_token

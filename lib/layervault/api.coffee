@@ -23,7 +23,8 @@ module.exports = class API
     headers = {}
     headers["Authorization"] = "Bearer #{@config.accessToken}" unless options.auth is false
 
-    url = @apiUrl(endpoint, options) + "?#{qs.stringify(data)}"
+    url = @apiUrl(endpoint, options)
+    url += "?#{qs.stringify(data)}" unless Object.keys(data).length is 0
 
     needle.get url, {
       headers: headers

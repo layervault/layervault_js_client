@@ -52,9 +52,6 @@ module.exports = class File extends Node
   # @param [Function] cb The finished callback.
   move: (opts, cb) -> @api.post "#{@nodePath}/move", opts, @buildRelations(cb)
 
-  # @see File#move
-  rename: (args...) -> @move.apply @, args
-
   # Retrieves all revisions for this file.
   #
   # @param [Function] cb The finished callback.

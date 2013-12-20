@@ -90,7 +90,9 @@ module.exports = class Node
         (new klass(api, @, r.name)).withData(r)
       , @
 
-      @withData prop: resp
+      relations = {}; relations[prop] = resp
+      @withData relations
+      
       cb.call(@, err, resp)
 
   parsePreviewOptions: (args) ->

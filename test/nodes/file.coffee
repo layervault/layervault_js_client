@@ -137,4 +137,36 @@ describe 'File', ->
         expect(resp.name).to.be('test.psd')
         done()
 
+    it 'updates the object with the new data', (done) ->
+      @file.move to: 'Other Project', (err, resp) ->
+        expect(@local_path).to.be('~/LayerVault/Other Project/test.psd')
+        done()
 
+  describe 'revisions', ->
+    beforeEach ->
+      nock(@config.apiBase)
+        .get("#{@config.apiPath}#{@file.nodePath}/revisions")
+        .reply(200, require('../fixtures/file/revisions'))
+
+    it 'does not error', (done) ->
+      @file.revisions (err, resp) ->
+        expect(err).to.be(null)
+        done()
+
+    it 'returns a response array', (done) ->
+      @file.revisions (err, resp) ->
+        expect(resp).to.be.an('array')
+        expect(resp.length).to.be(2)
+        done()
+
+    it 'applies the data to the file object', (done) ->
+      @file.revisions (err, resp) ->
+        expect(@revisions).to.be.an('array')
+        expect(@revisions.length).to.be(2)
+        done()
+
+    it 'correctly builds relations', (done) ->
+      @file.revisions (err, resp) ->
+        expect(@revisions[0].get).to.be.a('function')
+        expect(@revisions[0].nodeName).to.be('1')
+        done()

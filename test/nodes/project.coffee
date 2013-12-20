@@ -111,3 +111,20 @@ describe 'Project', ->
         expect(resp).to.be.an('object')
         done()
 
+  describe 'changeColor', ->
+    beforeEach ->
+      nock(@config.apiBase)
+        .put("#{@config.apiPath}#{@project.nodePath}/color", color: 'red')
+        .reply(200, require('../fixtures/project/changeColor'))
+
+    it 'does not error', (done) ->
+      @project.changeColor 'red', (err, resp) ->
+        expect(err).to.be(null)
+        done()
+
+    it 'returns a response object', (done) ->
+      @project.changeColor 'red', (err, resp) ->
+        expect(resp).to.be.an('object')
+        expect(resp.error).to.be('success')
+        done()
+

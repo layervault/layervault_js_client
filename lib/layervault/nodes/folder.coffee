@@ -25,7 +25,7 @@ module.exports = class Folder extends Node
   move: (to, cb) -> @api.post("#{@nodePath}/move", { to: to }, cb.bind(@))
 
   # @see Folder#move
-  rename: @move
+  rename: (args...) -> @move.apply @, args
 
   # Changes the color of the folder. At this time, the color is only reflected
   # on the site for project folders. Possible values include: white, green,

@@ -1,5 +1,6 @@
 needle = require 'needle'
 qs = require 'querystring'
+util = require 'util'
 
 # API request helper class. Relies on needle for issuing HTTP requests.
 # Formats callback arguments such that they are always called with (error, response).
@@ -29,6 +30,7 @@ module.exports = class API
     needle.get url, {
       headers: headers
     }, (error, response, body) ->
+      # console.log util.inspect body, depth: null
       return cb(null, body) if 200 <= response.statusCode < 300
       return cb(body, null)
 

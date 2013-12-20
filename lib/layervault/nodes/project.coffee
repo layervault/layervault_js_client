@@ -17,7 +17,7 @@ module.exports = class Project extends Node
   # Creates a project (and folder) at the root of the organization.
   #
   # @param [Function] cb The finished callback.
-  create: (cb) -> @api.post(@nodePath, {}, cb.bind(@))
+  create: (cb) -> @api.post(@nodePath, {}, @buildRelations(cb))
 
   # Deletes this project (and folder).
   #

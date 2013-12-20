@@ -37,7 +37,7 @@ module.exports = class File extends Node
       md5 = opts.md5
     else if opts.localPath?
       service = new Md5Service(opts.localPath)
-      service.calculate (md5) => @delete { md5: md5 }, cb
+      return service.calculate (md5) => @delete { md5: md5 }, cb
     else
       throw "Deleting a file requires the md5 of the latest revision"
 

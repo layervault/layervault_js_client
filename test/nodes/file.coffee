@@ -43,4 +43,59 @@ describe 'File', ->
         expect(@revisions[0].get).to.be.a('function')
         done()
 
+  describe 'create', ->
+    beforeEach ->
+      # Get S3 credentials
+      nock(@config.apiBase)
+        .put("#{@config.apiPath}#{@file.nodePath}")
+        .reply(200, {})
+
+      # POST to S3
+      callbackUrl = @config.apiBase + @config.apiPath + @file.nodePath + "?code=abc"
+      nock('https://omnivore-scratch.s3.amazonaws.com')
+        .post('/')
+        .reply(200, {}, {
+          Location: callbackUrl
+        })
+
+      # Notify LayerVault file is ready
+      nock(@config.apiBase)
+        .post("#{@config.apiPath}#{@file.nodePath}?code=abc&access_token=#{@config.accessToken}")
+        .reply(200, require('../fixtures/file/create'))
+
+    it 'does not error', (done) ->
+      @file.create {
+        localPath: './test/fixtures/file/file.txt'
+        contentType: 'application/json'
+      }, (err, resp) ->
+        expect(err).to.be(null)
+        done()
+
+    it 'returns a file response object', (done) ->
+      @file.create {
+        localPath: './test/fixtures/file/file.txt'
+        contentType: 'application/json'
+      }, (err, resp) ->
+        expect(resp).to.be.an('object')
+        expect(resp.name).to.be('test.psd')
+        done()
+
+    it 'applies the data to the file object', (done) ->
+      @file.create {
+        localPath: './test/fixtures/file/file.txt'
+        contentType: 'application/json'
+      }, (err, resp) ->
+        expect(@name).to.be('test.psd')
+        done()
+
+    it 'correctly builds relations', (done) ->
+      @file.create {
+        localPath: './test/fixtures/file/file.txt'
+        contentType: 'application/json'
+      }, (err, resp) ->
+        expect(@revisions.length).to.be(1)
+        expect(@revisions[0].name).to.be('1')
+        expect(@revisions[0].nodePath).to.be('/ryan-lefevre/Test%20Project/test.psd/1')
+        expect(@revisions[0].get).to.be.a('function')
+        done()
 

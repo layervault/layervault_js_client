@@ -23,7 +23,7 @@ module.exports = class File extends Node
   # @param [Function] cb The finished callback.
   create: (options, cb) ->
     service = new UploadService(@, options)
-    service.perform cb.bind(@)
+    service.perform @buildRelations(cb)
 
   # Deletes the file at this path. Requires the MD5 of the latest version so
   # that the server can validate it's deleting the right version.

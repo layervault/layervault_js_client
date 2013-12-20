@@ -83,3 +83,31 @@ describe 'Project', ->
         expect(resp.error).to.be('success')
         done()
 
+  describe 'move', ->
+    beforeEach ->
+      nock(@config.apiBase)
+        .post("#{@config.apiPath}#{@project.nodePath}/move", to: 'Other Project')
+        .reply(200, require('../fixtures/project/move'))
+
+    it 'does not error', (done) ->
+      @project.move 'Other Project', (err, resp) ->
+        expect(err).to.be(null)
+        done()
+
+    it 'returns a response object', (done) ->
+      @project.move 'Other Project', (err, resp) ->
+        expect(resp).to.not.be(null)
+        expect(resp.name).to.be('Other Project')
+        done()
+
+    it 'updates the object with the new data', (done) ->
+      @project.move 'Other Project', (err, resp) ->
+        expect(@name).to.be('Other Project')
+        done()
+
+    it 'is aliased to #rename', (done) ->
+      @project.rename 'Other Project', (err, resp) ->
+        expect(err).to.be(null)
+        expect(resp).to.be.an('object')
+        done()
+

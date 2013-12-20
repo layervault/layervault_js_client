@@ -66,4 +66,20 @@ describe 'Project', ->
         expect(@name).to.be('Test Project')
         done()
 
-    
+  describe 'delete', ->
+    beforeEach ->
+      nock(@config.apiBase)
+        .delete("#{@config.apiPath}#{@project.nodePath}")
+        .reply(200, require('../fixtures/project/delete'))
+
+    it 'does not error', (done) ->
+      @project.delete (err, resp) ->
+        expect(err).to.be(null)
+        done()
+
+    it 'returns success', (done) ->
+      @project.delete (err, resp) ->
+        expect(resp).to.not.be(null)
+        expect(resp.error).to.be('success')
+        done()
+

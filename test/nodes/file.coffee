@@ -120,3 +120,21 @@ describe 'File', ->
         expect(resp.error).to.be('success')
         done()
 
+  describe 'move', ->
+    beforeEach ->
+      nock(@config.apiBase)
+        .post("#{@config.apiPath}#{@file.nodePath}/move", to: 'Other Project')
+        .reply(200, require('../fixtures/file/move'))
+
+    it 'does not error', (done) ->
+      @file.move to: 'Other Project', (err, resp) ->
+        expect(err).to.be(null)
+        done()
+
+    it 'returns a response object', (done) ->
+      @file.move to: 'Other Project', (err, resp) ->
+        expect(resp).to.not.be(null)
+        expect(resp.name).to.be('test.psd')
+        done()
+
+

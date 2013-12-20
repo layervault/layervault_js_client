@@ -11,7 +11,7 @@ describe 'Folder', ->
     @client = new LayerVault.Client(@config)
     @organization = @client.organization('ryan-lefevre')
 
-  beforeEach -> @folder = @organization.project('Test Project')
+  beforeEach -> @folder = @organization.folder('Test Project')
 
   describe 'get', ->
     beforeEach ->
@@ -89,23 +89,23 @@ describe 'Folder', ->
         .reply(200, require('../fixtures/folder/move'))
 
     it 'does not error', (done) ->
-      @folder.move 'Other Project', (err, resp) ->
+      @folder.move to: 'Other Project', (err, resp) ->
         expect(err).to.be(null)
         done()
 
     it 'returns a response object', (done) ->
-      @folder.move 'Other Project', (err, resp) ->
+      @folder.move to: 'Other Project', (err, resp) ->
         expect(resp).to.not.be(null)
         expect(resp.name).to.be('Other Project')
         done()
 
     it 'updates the object with the new data', (done) ->
-      @folder.move 'Other Project', (err, resp) ->
+      @folder.move to: 'Other Project', (err, resp) ->
         expect(@name).to.be('Other Project')
         done()
 
     it 'is aliased to #rename', (done) ->
-      @folder.rename 'Other Project', (err, resp) ->
+      @folder.rename to: 'Other Project', (err, resp) ->
         expect(err).to.be(null)
         expect(resp).to.be.an('object')
         done()

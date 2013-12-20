@@ -1,6 +1,6 @@
-Node = require '../node'
-File = require './file'
-Folder = require './folder'
+Node    = require '../node'
+File    = require './file'
+Folder  = require './folder'
 
 # Represents a single LayerVault Project. Projects are always tied to a top-level
 # Folder in the LayerVault tree.

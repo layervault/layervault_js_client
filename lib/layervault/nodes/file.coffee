@@ -50,10 +50,10 @@ module.exports = class File extends Node
   # @option opts [String] to (Required) The path of the folder where the file should reside. Relative to the organization root.
   # @option opts [String] new_file_name (Optional) The new file name for this file.
   # @param [Function] cb The finished callback.
-  move: (opts, cb) -> @api.post("#{@nodePath}/move", opts, cb.bind(@))
+  move: (opts, cb) -> @api.post "#{@nodePath}/move", opts, @buildRelations(cb)
 
   # @see File#move
-  rename: @move
+  rename: (args...) -> @move.apply @, args
 
   # Retrieves all revisions for this file.
   #

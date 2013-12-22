@@ -1,3 +1,4 @@
+RSVP = require 'rsvp'
 needle = require 'needle'
 qs = require 'querystring'
 util = require 'util'
@@ -27,12 +28,16 @@ module.exports = class API
     url = @apiUrl(endpoint, options)
     url += "?#{qs.stringify(data)}" unless Object.keys(data).length is 0
 
-    needle.get url, {
-      headers: headers
-    }, (error, response, body) ->
-      # console.log util.inspect body, depth: null
-      return cb(null, body) if 200 <= response.statusCode < 300
-      return cb(body, null)
+    new RSVP.Promise (resolve, reject) =>
+      needle.get url, {
+        headers: headers
+      }, (error, response, body) ->
+        if 200 <= response.statusCode < 300
+          resolve(body)
+          cb(null, body)
+        else
+          reject(body)
+          cb(body, null)
 
   # Issues a POST request to the API
   #
@@ -46,11 +51,16 @@ module.exports = class API
     headers = {}
     headers["Authorization"] = "Bearer #{@config.accessToken}" unless options.auth is false
 
-    needle.post @apiUrl(endpoint, options), data, {
-      headers: headers
-    }, (error, response, body) ->
-      return cb(null, body) if 200 <= response.statusCode < 300
-      return cb(body, null)
+    new RSVP.Promise (resolve, reject) =>
+      needle.post @apiUrl(endpoint, options), data, {
+        headers: headers
+      }, (error, response, body) ->
+        if 200 <= response.statusCode < 300
+          resolve(body)
+          cb(null, body)
+        else
+          reject(body)
+          cb(body, null)
 
   # Issues a DELETE request to the API. Authorization is always enabled.
   #
@@ -62,11 +72,16 @@ module.exports = class API
   delete: (endpoint, data = {}, cb = (->), options = {}) ->
     headers = { 'Authorization': "Bearer #{@config.accessToken}" }
 
-    needle.delete @apiUrl(endpoint, options), data, {
-      headers: headers
-    }, (error, response, body) ->
-      return cb(null, body) if 200 <= response.statusCode < 300
-      return cb(body, null)
+    new RSVP.Promise (resolve, reject) =>
+      needle.delete @apiUrl(endpoint, options), data, {
+        headers: headers
+      }, (error, response, body) ->
+        if 200 <= response.statusCode < 300
+          resolve(body)
+          cb(null, body)
+        else
+          reject(body)
+          cb(body, null)
 
   # Issues a PUT request to the API. Authorization is always enabled.
   #
@@ -78,11 +93,16 @@ module.exports = class API
   put: (endpoint, data = {}, cb = (->), options = {}) ->
     headers = { 'Authorization': "Bearer #{@config.accessToken}" }
 
-    needle.put @apiUrl(endpoint, options), data, {
-      headers: headers
-    }, (error, response, body) ->
-      return cb(null, body) if 200 <= response.statusCode < 300
-      return cb(body, null)
+    new RSVP.Promise (resolve, reject) =>
+      needle.put @apiUrl(endpoint, options), data, {
+        headers: headers
+      }, (error, response, body) ->
+        if 200 <= response.statusCode < 300
+          resolve(body)
+          cb(null, body)
+        else
+          reject(body)
+          cb(body, null)
 
   # Builds an API url
   #

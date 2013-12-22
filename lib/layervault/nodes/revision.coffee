@@ -5,7 +5,7 @@ module.exports = class Revision extends Node
   # Retrieves information about this revision.
   #
   # @param [Function] cb The finished callback.
-  get: (cb) -> @api.get @nodePath, {}, cb.bind(@)
+  get: (cb = ->) -> @api.get @nodePath, {}, cb.bind(@)
 
   # Retrieves the first preview for this revision.
   #
@@ -38,12 +38,12 @@ module.exports = class Revision extends Node
   # Retrieves metadata parsed for this revision.
   #
   # @param [Function] cb The finished callback.
-  meta: (cb) -> @api.get "#{@nodePath}/meta", {}, cb.bind(@)
+  meta: (cb = ->) -> @api.get "#{@nodePath}/meta", {}, cb.bind(@)
 
   # Retrieves all feedback left on this revision.
   #
   # @param [Function] cb The finished callback.
-  feedbackItems: (cb) -> @api.get "#{@nodePath}/feedback_items", {}, cb.bind(@)
+  feedbackItems: (cb = ->) -> @api.get "#{@nodePath}/feedback_items", {}, cb.bind(@)
 
   # @see Revision#feedbackItems
-  feedback: @feedbackItems
+  feedback: (args...) -> @feedbackItems.apply(@, args)

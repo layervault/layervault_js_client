@@ -1,3 +1,4 @@
+RSVP    = require 'rsvp'
 crypto  = require 'crypto'
 fs      = require 'fs'
 
@@ -14,8 +15,12 @@ module.exports = class Md5Service
   # asynchronously. The resulting MD5 is given in hex form.
   #
   # @param [Function] cb The finished callback.
-  calculate: (cb) ->
-    md5 = crypto.createHash 'md5'
-    s = fs.ReadStream(@file)
-    s.on 'data', (d) -> md5.update(d)
-    s.on 'end', -> cb md5.digest('hex')
+  calculate: (cb = ->) ->
+    new RSVP.Promise (resolve, reject) =>
+      md5 = crypto.createHash 'md5'
+      s = fs.ReadStream(@file)
+      s.on 'data', (d) -> md5.update(d)
+      s.on 'end', ->
+        digest = md5.digest('hex')
+        cb(digest)
+        resolve(digest)

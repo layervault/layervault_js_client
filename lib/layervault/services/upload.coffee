@@ -1,3 +1,4 @@
+RSVP = require 'rsvp'
 needle  = require 'needle'
 Md5Service = require './md5'
 
@@ -29,11 +30,25 @@ module.exports = class UploadService
   # Starts the upload process.
   #
   # @param [Function] cb The finished callback.
-  perform: (cb) ->
-    @md5.calculate (md5) => 
-      @getAwsCredentials md5, (err, resp) =>
-        return cb(err, null) if err
-        @sendFileToS3 resp, cb
+  perform: (cb = ->) ->
+    new RSVP.Promise (resolve, reject) =>
+      @md5.calculate (md5) => 
+        @getAwsCredentials md5, (err, resp) =>
+          if err?
+            reject(err)
+            cb(err, null)
+            return
+
+          @sendFileToS3 resp, (err, data) =>
+            if err?
+              reject(err)
+              cb(err, null)
+            else
+              resolve(data)
+              cb(null, data)
+
+
+
 
   # Fetches the S3 credentials and information from LayerVault.
   getAwsCredentials: (md5, cb) -> @api.put @file.nodePath, md5: md5, cb

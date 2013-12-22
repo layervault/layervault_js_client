@@ -12,7 +12,7 @@ module.exports = class File extends Node
   # Retrieves information about the file at this path.
   #
   # @param [Function] cb The finished callback.
-  get: (cb) -> @api.get @nodePath, {}, @buildRelations(cb)
+  get: (cb = ->) -> @api.get @nodePath, {}, @buildRelations(cb)
 
   # Creates a file or a new revision at this path. Must be given
   # a path to a file on disk and a mime-type for the file.
@@ -21,7 +21,7 @@ module.exports = class File extends Node
   # @option options [String] localPath Path to the file on disk.
   # @option options [String] contentType The mime-type of the file.
   # @param [Function] cb The finished callback.
-  create: (options, cb) ->
+  create: (options, cb = ->) ->
     service = new UploadService(@, options)
     service.perform @buildRelations(cb)
 
@@ -32,7 +32,7 @@ module.exports = class File extends Node
   # @option options [String] md5 The md5 of this file.
   # @option options [String] localPath The path to this file on disk. The MD5 will be calculated.
   # @param [Function] cb The finished callback.
-  delete: (opts, cb) ->
+  delete: (opts, cb = ->) ->
     if opts.md5?
       md5 = opts.md5
     else if opts.localPath?
@@ -50,12 +50,12 @@ module.exports = class File extends Node
   # @option opts [String] to (Required) The path of the folder where the file should reside. Relative to the organization root.
   # @option opts [String] new_file_name (Optional) The new file name for this file.
   # @param [Function] cb The finished callback.
-  move: (opts, cb) -> @api.post "#{@nodePath}/move", opts, @buildRelations(cb)
+  move: (opts, cb = ->) -> @api.post "#{@nodePath}/move", opts, @buildRelations(cb)
 
   # Retrieves all revisions for this file.
   #
   # @param [Function] cb The finished callback.
-  revisions: (cb) -> @api.get "#{@nodePath}/revisions", {}, @buildRelationsArray('revisions', @relations.revisions, cb)
+  revisions: (cb = ->) -> @api.get "#{@nodePath}/revisions", {}, @buildRelationsArray('revisions', @relations.revisions, cb)
 
   # Retrieves the latest preview for this file.
   #
@@ -88,7 +88,7 @@ module.exports = class File extends Node
   # Retrieves all feedback items left on this File.
   #
   # @param [Function] cb The finished callback.
-  feedbackItems: (cb) -> @api.get "#{@nodePath}/feedback_items", {}, cb.bind(@)
+  feedbackItems: (cb = ->) -> @api.get "#{@nodePath}/feedback_items", {}, cb.bind(@)
 
   # @see File#feedbackItems
-  feedback: @feedbackItems
+  feedback: (args...) -> @feedbackItems.apply(@, args)

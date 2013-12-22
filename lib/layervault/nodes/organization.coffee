@@ -10,4 +10,4 @@ module.exports = class Organization extends Node
   # Retrieves information about this organization.
   #
   # @param [Function] cb The finished callback.
-  get: (cb) -> @api.get @nodePath, {}, @buildRelations(cb)
+  get: (cb = ->) -> @api.get @nodePath, {}, @buildRelations(cb)

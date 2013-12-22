@@ -80,6 +80,14 @@ describe 'File', ->
         expect(resp.name).to.be('test.psd')
         done()
 
+    it 'returns a promise', ->
+      promise = @file.create
+        localPath: './test/fixtures/file/file.txt'
+        contentType: 'application/json'
+
+      expect(promise).to.have.property('then')
+      expect(promise.then).to.be.a('function')
+
     it 'applies the data to the file object', (done) ->
       @file.create {
         localPath: './test/fixtures/file/file.txt'

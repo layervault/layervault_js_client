@@ -96,10 +96,15 @@ module.exports = class Node
       cb.call(@, err, resp)
 
   parsePreviewOptions: (args) ->
-    if args.length == 1
-      [{}, args[0]]
+    if args.length is 0
+      parsedArgs = [{}, (->)]
+    else if typeof args[0] is 'function'
+      parsedArgs = [{}, args[0]]
     else
-      args
+      parsedArgs = args
+
+    parsedArgs[1] = (->) if not parsedArgs[1]?
+    return parsedArgs
 
   # Creates a new Project object based on the given name, and sets this
   # node as the parent node.

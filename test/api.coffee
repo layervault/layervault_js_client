@@ -15,6 +15,43 @@ describe 'API', ->
     expect(@client.api.config).to.be(@config)
 
   describe 'GET', ->
+    describe 'promise', ->
+      it 'returns a promise', ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}/200")
+          .reply(200, {
+            foo: 'bar'
+          })
+
+        promise = @api.get '/200'
+
+        expect(promise).to.have.property('then')
+        expect(promise.then).to.be.a('function')
+
+      it 'resolves successful promises correctly', (done) ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}/200")
+          .reply(200, {
+            foo: 'bar'
+          })
+
+        @api.get('/200').then (resp) ->
+          expect(resp).to.not.be(null)
+          expect(resp.foo).to.be('bar')
+          done()
+
+      it 'resolves failed promises correctly', (done) ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}/400")
+          .reply(400, {
+            foo: 'bar'
+          })
+
+        @api.get('/400').fail (resp) ->
+          expect(resp).to.not.be(null)
+          expect(resp.foo).to.be('bar')
+          done()
+
     describe 'successful request', ->
       beforeEach ->
         nock(@config.apiBase)

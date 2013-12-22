@@ -85,13 +85,11 @@ client.organization('layervault').file('Test/Stuff', 'NewFile.psd').create({
 All asynchronous calls return a promise, which can be used as an alternative to providing a callback.
 
 ``` js
-client.auth.withPassword('username', 'password', function(err, accessToken, refreshToken) {
-  // Store tokens
-}).then(function () {
-  // Fetch 
+client.auth.withPassword('username', 'password').then(function (resp) {
+  console.log(resp.accessToken);
   return client.organization('layervault').get();
 }).then(function (org) {
-  return org.projects[0].files[0].preview();
+  return org.projects[0].files[0].preview({w: 200});
 }).then(function (preview) {
   console.log(preview);
 });

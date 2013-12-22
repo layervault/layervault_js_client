@@ -1,4 +1,5 @@
-API = require './api.coffee'
+RSVP = require 'rsvp'
+API  = require './api.coffee'
 
 # Handles API authentication and the related client configuration.
 module.exports = class Authenticate
@@ -15,17 +16,22 @@ module.exports = class Authenticate
   # @param [String] paassword The login password.
   # @param [Function] cb The finished callback
   withPassword: (username, password, cb = ->) ->
-    @api.post('/oauth/token',
-      grant_type: 'password'
-      username: username
-      password: password
-      client_id: @config.oauthKey
-      client_secret: @config.oauthSecret
-    , (error, resp, body) =>
-      return cb(error, null) if error?
+    new RSVP.Promise (resolve, reject) =>
+      @api.post('/oauth/token',
+        grant_type: 'password'
+        username: username
+        password: password
+        client_id: @config.oauthKey
+        client_secret: @config.oauthSecret
+      , (error, resp, body) =>
+        if error?
+          reject(error)
+          cb(error, null)
+          return
 
-      @config.accessToken = resp.access_token
-      @config.refreshToken = resp.refresh_token
-      
-      cb(null, @config.accessToken, @config.refreshToken)
-    , {auth: false, excludeApiPath: true})
+        @config.accessToken = resp.access_token
+        @config.refreshToken = resp.refresh_token
+        
+        resolve accessToken: @config.accessToken, refreshToken: @config.refreshToken
+        cb(null, @config.accessToken, @config.refreshToken)
+      , {auth: false, excludeApiPath: true})

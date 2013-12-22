@@ -92,7 +92,7 @@ client.auth.withPassword('username', 'password', function(err, accessToken, refr
   return client.organization('layervault').get();
 }).then(function (org) {
   return org.projects[0].files[0].preview();
-}).then (function (preview) {
+}).then(function (preview) {
   console.log(preview);
 });
 ```

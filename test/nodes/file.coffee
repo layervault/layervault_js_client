@@ -170,3 +170,10 @@ describe 'File', ->
         expect(@revisions[0].get).to.be.a('function')
         expect(@revisions[0].nodeName).to.be('1')
         done()
+
+  describe 'preview', ->
+    beforeEach ->
+      nock(@config.apiBase)
+        .get("#{@config.apiPath}#{@file.nodePath}/preview")
+        .reply(200, require('../fixtures/file/preview'))
+

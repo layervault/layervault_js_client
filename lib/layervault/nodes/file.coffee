@@ -55,7 +55,7 @@ module.exports = class File extends Node
   # Retrieves all revisions for this file.
   #
   # @param [Function] cb The finished callback.
-  revisions: (cb) -> @api.get("#{@nodePath}/revisions", {}, @buildRelationsArray('revisions', @relations.revisions, cb))
+  revisions: (cb) -> @api.get "#{@nodePath}/revisions", {}, @buildRelationsArray('revisions', @relations.revisions, cb)
 
   # Retrieves the latest preview for this file.
   #
@@ -69,7 +69,7 @@ module.exports = class File extends Node
   #   @param [Function] cb The finished callback.
   preview: (args...) ->
     [opts, cb] = @parsePreviewOptions(args)
-    @api.get("#{@nodePath}/preview", opts, cb.bind(@))
+    @api.get "#{@nodePath}/preview", opts, cb.bind(@)
 
   # Retrieves all of the previews for the latest revision of this file.
   #
@@ -83,7 +83,7 @@ module.exports = class File extends Node
   #   @param [Function] cb The finished callback.
   previews: (args...) ->
     [opts, cb] = @parsePreviewOptions(args)
-    @api.get("#{@nodePath}/previews", opts, cb.bind(@))
+    @api.get "#{@nodePath}/previews", opts, cb.bind(@)
 
   # Retrieves all feedback items left on this File.
   #

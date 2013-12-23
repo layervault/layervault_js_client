@@ -1,5 +1,7 @@
 # LayerVault JS Client
 
+[![Build Status](https://travis-ci.org/layervault/layervault_js_client.png?branch=master)](https://travis-ci.org/layervault/layervault_js_client)
+
 NodeJS client for accessing the [LayerVault API](https://developers.layervault.com).
 
 ## Configuration

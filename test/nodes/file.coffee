@@ -179,7 +179,7 @@ describe 'File', ->
         expect(@revisions[0].nodeName).to.be('1')
         done()
 
-  describe 'preview', ->
+  describe.skip 'preview', ->
     before ->
       @previewUrl = "https://layervault-preview.imgix.net/preview.jpg"
 

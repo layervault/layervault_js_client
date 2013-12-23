@@ -12,6 +12,7 @@ describe 'Folder', ->
     @organization = @client.organization('ryan-lefevre')
 
   beforeEach -> @folder = @organization.folder('Test Project')
+  afterEach -> nock.cleanAll()
 
   describe 'get', ->
     beforeEach ->

@@ -29,6 +29,8 @@ describe 'Authentication', ->
           refresh_token: 'slothbar'
         })
 
+    afterEach -> nock.cleanAll()
+
     it 'returns credentials and updates the config', (done) ->
       @client.auth.withPassword @username, @password, (err, tokens) =>
         expect(@config.accessToken).to.not.be(null)
@@ -85,6 +87,12 @@ describe 'Authentication', ->
         expect(tokens.refreshToken).to.be('newbarfoo')
         expect(@config.accessToken).to.be(tokens.accessToken)
         expect(@config.refreshToken).to.be(tokens.refreshToken)
+        done()
+
+    it 'works with a promise', (done) ->
+      @client.auth.refreshTokens().then (tokens) =>
+        expect(tokens).to.be.an('object')
+        expect(tokens.accessToken).to.be('newfoobar')
         done()
 
     it 'emits an authorized event', (done) ->

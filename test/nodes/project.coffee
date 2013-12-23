@@ -12,6 +12,7 @@ describe 'Project', ->
     @organization = @client.organization('ryan-lefevre')
 
   beforeEach -> @project = @organization.project('Test Project')
+  afterEach -> nock.cleanAll()
 
   describe 'get', ->
     beforeEach ->

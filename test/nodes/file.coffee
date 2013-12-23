@@ -12,6 +12,7 @@ describe 'File', ->
     @organization = @client.organization('ryan-lefevre')
 
   beforeEach -> @file = @organization.file('Test Project', 'test.psd')
+  afterEach -> nock.cleanAll()
 
   describe 'get', ->
     beforeEach ->

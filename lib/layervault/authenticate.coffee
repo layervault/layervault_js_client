@@ -1,5 +1,5 @@
-RSVP = require 'rsvp'
-API  = require './api.coffee'
+RSVP    = require 'rsvp'
+needle  = require 'needle'
 
 # Handles API authentication and the related client configuration.
 module.exports = class Authenticate
@@ -7,8 +7,7 @@ module.exports = class Authenticate
   #
   # @param [Configuration] config The client configuration
   constructor: (@config) ->
-    @tokenEndpoint = '/auth/token'
-    @api = new API(@config)
+    @tokenEndpoint = @config.apiBase + '/oauth/token'
 
   # Performs username/password authentication to retrieve OAuth tokens.
   #
@@ -17,49 +16,45 @@ module.exports = class Authenticate
   # @param [Function] cb The finished callback
   withPassword: (username, password, cb = ->) ->
     new RSVP.Promise (resolve, reject) =>
-      @api.post('/oauth/token',
+      needle.post @tokenEndpoint,
         grant_type: 'password'
         username: username
         password: password
         client_id: @config.oauthKey
         client_secret: @config.oauthSecret
-      , (error, resp) =>
+      , (error, resp, body) =>
         if error?
           reject(error)
           cb(error, null)
           return
 
-        @config.accessToken = resp.access_token
-        @config.refreshToken = resp.refresh_token
+        @config.accessToken = body.access_token
+        @config.refreshToken = body.refresh_token
         data = accessToken: @config.accessToken, refreshToken: @config.refreshToken
 
         @trigger 'authorized', data
         resolve(data)
         cb(null, data)
 
-      , {auth: false, excludeApiPath: true})
-
   refreshTokens: (cb = ->) ->
     new RSVP.Promise (resolve, reject) =>
-      @api.post('/oauth/token',
+      needle.post @tokenEndpoint,
         grant_type: 'refresh_token',
         client_id: @config.oauthKey,
         client_secret: @config.oauthSecret,
         refresh_token: @config.refreshToken
-      , (error, resp) =>
+      , (error, resp, body) =>
         if error?
           reject(error)
           cb(error, null)
           return
 
-        @config.accessToken = resp.access_token
-        @config.refreshToken = resp.refresh_token
+        @config.accessToken = body.access_token
+        @config.refreshToken = body.refresh_token
         data = accessToken: @config.accessToken, refreshToken: @config.refreshToken
 
         @trigger 'authorized', data
         resolve(data)
         cb(null, data)
-
-      , {auth: false, excludeApiPath: true})
 
 RSVP.EventTarget.mixin(Authenticate::)

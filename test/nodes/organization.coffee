@@ -11,6 +11,8 @@ describe 'Organization', ->
     @client = new LayerVault.Client(@config)
     @organization = @client.organization('ryan-lefevre')
 
+  afterEach -> nock.cleanAll()
+
   describe 'get', ->
     beforeEach ->
       nock(@config.apiBase)

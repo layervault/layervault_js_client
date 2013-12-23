@@ -13,7 +13,7 @@ module.exports = class Client
   # @param [Configuration] config The configuration to use for this client
   constructor: (@config) ->
     @auth = new Authenticate(@config)
-    @api = new API(@config)
+    @api = new API(@, @config)
     @nodePath = ''
 
   # Fetches information about the logged in user

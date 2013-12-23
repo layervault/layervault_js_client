@@ -9,8 +9,9 @@ qs      = require 'querystring'
 module.exports = class API
   # Construct a new API class
   #
-  # @param [Configuration] config The client configuration
-  constructor: (@config) ->
+  # @param [Client] client The initialized client
+  # @param [Configuration] config The configuration options
+  constructor: (@client, @config) ->
 
   # Issues a GET request to the API
   #
@@ -27,14 +28,22 @@ module.exports = class API
     url = @apiUrl(endpoint, options)
     url += "?#{qs.stringify(data)}" unless Object.keys(data).length is 0
 
-    new RSVP.Promise (resolve, reject) ->
+    new RSVP.Promise (resolve, reject) =>
       needle.get url, {
         headers: headers
-      }, (error, response, body) ->
+      }, (error, response, body) =>
         if 200 <= response.statusCode < 300
           resolve(body)
           cb(null, body)
         else
+          # Access token is expired. We must refresh it and attempt the request again.
+          if body.error is 'invalid_request'
+            @client.auth.refreshTokens()
+              .then((tokens) => @get(endpoint, data, cb, options))
+              .fail((error) => reject(error))
+
+            return
+
           reject(body)
           cb(body, null)
 
@@ -52,14 +61,22 @@ module.exports = class API
 
     url = @apiUrl(endpoint, options)
 
-    new RSVP.Promise (resolve, reject) ->
+    new RSVP.Promise (resolve, reject) =>
       needle.post url, data, {
         headers: headers
-      }, (error, response, body) ->
+      }, (error, response, body) =>
         if 200 <= response.statusCode < 300
           resolve(body)
           cb(null, body)
         else
+          # Access token is expired. We must refresh it and attempt the request again.
+          if body.error is 'invalid_request'
+            @client.auth.refreshTokens()
+              .then((tokens) => @post(endpoint, data, cb, options))
+              .fail((error) => reject(error))
+
+            return
+
           reject(body)
           cb(body, null)
 
@@ -75,14 +92,22 @@ module.exports = class API
 
     url = @apiUrl(endpoint, options)
 
-    new RSVP.Promise (resolve, reject) ->
+    new RSVP.Promise (resolve, reject) =>
       needle.delete url, data, {
         headers: headers
-      }, (error, response, body) ->
+      }, (error, response, body) =>
         if 200 <= response.statusCode < 300
           resolve(body)
           cb(null, body)
         else
+          # Access token is expired. We must refresh it and attempt the request again.
+          if body.error is 'invalid_request'
+            @client.auth.refreshTokens()
+              .then((tokens) => @delete(endpoint, data, cb, options))
+              .fail((error) => reject(error))
+
+            return
+
           reject(body)
           cb(body, null)
 
@@ -98,14 +123,22 @@ module.exports = class API
 
     url = @apiUrl(endpoint, options)
 
-    new RSVP.Promise (resolve, reject) ->
+    new RSVP.Promise (resolve, reject) =>
       needle.put url, data, {
         headers: headers
-      }, (error, response, body) ->
+      }, (error, response, body) =>
         if 200 <= response.statusCode < 300
           resolve(body)
           cb(null, body)
         else
+          # Access token is expired. We must refresh it and attempt the request again.
+          if body.error is 'invalid_request'
+            @client.auth.refreshTokens()
+              .then((tokens) => @put(endpoint, data, cb, options))
+              .fail((error) => reject(error))
+
+            return
+
           reject(body)
           cb(body, null)
 

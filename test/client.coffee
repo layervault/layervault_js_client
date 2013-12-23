@@ -8,6 +8,8 @@ describe 'Client', ->
     @config = new LayerVault.Configuration ->
       @accessToken = 'foobar'
 
+  afterEach -> nock.cleanAll()
+
   it 'exists on the LayerVault object', ->
     expect(LayerVault).to.have.property('Client')
     expect(LayerVault.Client).to.not.be(null)

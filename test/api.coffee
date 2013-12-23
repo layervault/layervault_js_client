@@ -6,10 +6,15 @@ LayerVault = require '../lib/layervault'
 describe 'API', ->
   before ->
     @config = new LayerVault.Configuration ->
-      @accessToken = 'abc123'
+      @oauthKey = 'abc123'
+      @oauthSecret = 'def456'
+      @accessToken = 'foobar'
+      @refreshToken = 'barfoo'
 
     @client = new LayerVault.Client(@config)
     @api = @client.api
+
+  afterEach -> nock.cleanAll()
 
   it 'is initialized with a configuration', ->
     expect(@client.api.config).to.be(@config)
@@ -89,3 +94,36 @@ describe 'API', ->
           expect(resp).to.be(null)
           done()
 
+  describe 'refreshing tokens', ->
+    beforeEach ->
+      nock(@config.apiBase)
+        .get("#{@config.apiPath}/200")
+        .reply(401, {
+          error: 'invalid_request'
+        })
+
+      nock(@config.apiBase)
+        .post('/oauth/token', {
+          grant_type: 'refresh_token',
+          client_id: @config.oauthKey,
+          client_secret: @config.oauthSecret,
+          refresh_token: @config.refreshToken
+        })
+        .reply(200, {
+          access_token: 'newfoobar',
+          refresh_token: 'newbarfoo'
+        })
+
+      nock(@config.apiBase)
+        .get("#{@config.apiPath}/200")
+        .reply(200, {
+          foo: 'bar'
+        })
+
+    it 'for a GET request', (done) ->
+      @api.get '/200', {}, (err, resp) ->
+        expect(err).to.be(null)
+        expect(resp).to.be.an('object')
+        expect(resp.foo).to.be('bar')
+
+        done()

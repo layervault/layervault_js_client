@@ -36,10 +36,10 @@ module.exports = class Authenticate
         @trigger 'authorized', data
         resolve(data)
         cb(null, data)
-        
+
       , {auth: false, excludeApiPath: true})
 
-  refreshToken: (cb = ->) ->
+  refreshTokens: (cb = ->) ->
     new RSVP.Promise (resolve, reject) =>
       @api.post('/oauth/token',
         grant_type: 'refresh_token',

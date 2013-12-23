@@ -285,3 +285,33 @@ describe 'File', ->
           expect(resp).to.eql(@previewUrls)
           done()
 
+  describe 'feedback items', ->
+    beforeEach ->
+      nock(@config.apiBase)
+        .get("#{@config.apiPath}#{@file.nodePath}/feedback_items")
+        .reply(200, require('../fixtures/file/feedback_items'))
+
+    it 'does not error', (done) ->
+      @file.feedbackItems (err, resp) ->
+        expect(err).to.be(null)
+        done()
+
+    it 'returns an array response', (done) ->
+      @file.feedbackItems (err, resp) ->
+        expect(resp).to.be.an('array')
+        expect(resp.length).to.be(1)
+        expect(resp[0].id).to.be(1)
+        done()
+
+    it 'is aliased to #feedback', (done) ->
+      @file.feedback (err, resp) ->
+        expect(err).to.be(null)
+        expect(resp).to.be.an('array')
+        done()
+
+    describe 'with a promise', ->
+      it 'resolves', (done) ->
+        @file.feedbackItems().then (resp) ->
+          expect(resp).to.be.an('array')
+          expect(resp.length).to.be(1)
+          done()

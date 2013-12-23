@@ -107,6 +107,11 @@ client.auth.withPassword('username', 'password').then(function (resp) {
 });
 ```
 
+## TODO
+
+* Allow file uploads to accept a file buffer
+* Implement authorization code OAuth flow
+
 ## Author
 
 Ryan LeFevre - [GitHub](https://github.com/meltingice), [Twitter](https://twitter.com/meltingice), [Email](mailto:ryan@layervault.com)

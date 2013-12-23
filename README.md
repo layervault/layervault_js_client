@@ -112,6 +112,11 @@ client.auth.withPassword('username', 'password').then(function (resp) {
 * Allow file uploads to accept a file buffer
 * Implement authorization code OAuth flow
 
+## Links
+
+* [Source documentation](http://coffeedoc.info/github/layervault/layervault_js_client/master/)
+* [LayerVault API Documentation](https://developers.layervault.com)
+
 ## Author
 
 Ryan LeFevre - [GitHub](https://github.com/meltingice), [Twitter](https://twitter.com/meltingice), [Email](mailto:ryan@layervault.com)

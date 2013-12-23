@@ -1,6 +1,6 @@
 {
   "name": "layervault",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "LayerVault API client",
   "keywords": [
     "layervault",
@@ -15,6 +15,10 @@
     "email": "ryan@layervault.com",
     "url": "http://github.com/meltingice"
   },
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/layervault/layervault_js_client/blob/master/LICENSE"
+  }],
   "dependencies": {
     "coffee-script": "~ 1.6.3",
     "needle": "~ 0.6.3",

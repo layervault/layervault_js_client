@@ -5,7 +5,7 @@ module.exports = class Revision extends Node
   # Retrieves information about this revision.
   #
   # @param [Function] cb The finished callback.
-  get: (cb = ->) -> @api.get @nodePath, {}, cb.bind(@)
+  get: (cb = ->) -> @api.get @nodePath, {}, @buildRelations(cb)
 
   # Retrieves the first preview for this revision.
   #

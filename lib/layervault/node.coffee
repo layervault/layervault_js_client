@@ -103,7 +103,7 @@ module.exports = class Node
     else
       parsedArgs = args
 
-    parsedArgs[1] = (->) if not parsedArgs[1]?
+    parsedArgs[1] = (->) unless parsedArgs[1]
     return parsedArgs
 
   # Creates a new Project object based on the given name, and sets this

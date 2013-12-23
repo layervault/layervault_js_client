@@ -180,8 +180,55 @@ describe 'File', ->
         done()
 
   describe 'preview', ->
-    beforeEach ->
-      nock(@config.apiBase)
-        .get("#{@config.apiPath}#{@file.nodePath}/preview")
-        .reply(200, require('../fixtures/file/preview'))
+    before ->
+      @previewUrl = "https://layervault-preview.imgix.net/preview.jpg"
 
+    describe 'without arguments', ->
+      beforeEach ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}#{@file.nodePath}/preview")
+          .reply(200, @previewUrl)
+
+      it 'does not error', (done) ->
+        @file.preview (err, resp) ->
+          expect(err).to.be(null)
+          done()
+
+      it 'returns a response', (done) ->
+        @file.preview (err, resp) =>
+          expect(resp).to.not.be(null)
+          expect(resp.toString()).to.be(@previewUrl)
+          done()
+
+    describe 'with arguments', ->
+      beforeEach ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}#{@file.nodePath}/preview", {w: 20})
+          .reply(200, @previewUrl)
+
+      it 'does not error', (done) ->
+        @file.preview {w: 20}, (err, resp) ->
+          expect(err).to.be(null)
+          done()
+
+      it 'returns a response', (done) ->
+        @file.preview {w: 20}, (err, resp) =>
+          expect(resp).to.not.be(null)
+          expect(resp.toString()).to.be(@previewUrl)
+          done()
+
+    describe 'with a promise', ->
+      beforeEach ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}#{@file.nodePath}/preview")
+          .reply(200, @previewUrl)
+
+      it 'resolves', (done) ->
+        @file.preview().then (resp) ->
+          expect(resp.toString()).to.be(@previewUrl)
+          done()
+
+      it 'resolves with arguments', (done) ->
+        @file.preview(w: 20).then (resp) ->
+          expect(resp.toString()).to.be(@previewUrl)
+          done()

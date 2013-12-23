@@ -1,7 +1,6 @@
-RSVP = require 'rsvp'
-needle = require 'needle'
-qs = require 'querystring'
-util = require 'util'
+RSVP    = require 'rsvp'
+needle  = require 'needle'
+qs      = require 'querystring'
 
 # API request helper class. Relies on needle for issuing HTTP requests.
 # Formats callback arguments such that they are always called with (error, response).

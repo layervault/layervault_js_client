@@ -23,7 +23,7 @@ module.exports = class Authenticate
         password: password
         client_id: @config.oauthKey
         client_secret: @config.oauthSecret
-      , (error, resp, body) =>
+      , (error, resp) =>
         if error?
           reject(error)
           cb(error, null)
@@ -31,7 +31,35 @@ module.exports = class Authenticate
 
         @config.accessToken = resp.access_token
         @config.refreshToken = resp.refresh_token
+        data = accessToken: @config.accessToken, refreshToken: @config.refreshToken
+
+        @trigger 'authorized', data
+        resolve(data)
+        cb(null, data)
         
-        resolve(accessToken: @config.accessToken, refreshToken: @config.refreshToken)
-        cb(null, @config.accessToken, @config.refreshToken)
       , {auth: false, excludeApiPath: true})
+
+  refreshToken: (cb = ->) ->
+    new RSVP.Promise (resolve, reject) =>
+      @api.post('/oauth/token',
+        grant_type: 'refresh_token',
+        client_id: @config.oauthKey,
+        client_secret: @config.oauthSecret,
+        refresh_token: @config.refreshToken
+      , (error, resp) =>
+        if error?
+          reject(error)
+          cb(error, null)
+          return
+
+        @config.accessToken = resp.access_token
+        @config.refreshToken = resp.refresh_token
+        data = accessToken: @config.accessToken, refreshToken: @config.refreshToken
+
+        @trigger 'authorized', data
+        resolve(data)
+        cb(null, data)
+
+      , {auth: false, excludeApiPath: true})
+
+RSVP.EventTarget.mixin(Authenticate::)

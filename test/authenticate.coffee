@@ -5,6 +5,9 @@ LayerVault = require '../lib/layervault'
 
 describe 'Authentication', ->
   before ->
+    @username = 'sloth@layervault.com'
+    @password = 'allhailthesloth'
+
     @config = new LayerVault.Configuration ->
       @oauthKey = 'abc123'
       @oauthSecret = 'def456'
@@ -12,10 +15,6 @@ describe 'Authentication', ->
     @client = new LayerVault.Client(@config)
 
   describe 'with correct username/password', ->
-    before ->
-      @username = 'sloth@layervault.com'
-      @password = 'allhailthesloth'
-
     beforeEach ->
       nock(@config.apiBase)
         .post('/oauth/token', {
@@ -31,11 +30,11 @@ describe 'Authentication', ->
         })
 
     it 'returns credentials and updates the config', (done) ->
-      @client.auth.withPassword @username, @password, (err, accessToken, refreshToken) =>
+      @client.auth.withPassword @username, @password, (err, tokens) =>
         expect(@config.accessToken).to.not.be(null)
         expect(@config.refreshToken).to.not.be(null)
-        expect(@config.accessToken).to.be(accessToken)
-        expect(@config.refreshToken).to.be(refreshToken)
+        expect(@config.accessToken).to.be(tokens.accessToken)
+        expect(@config.refreshToken).to.be(tokens.refreshToken)
         done()
 
     it 'works with a promise', (done) ->
@@ -45,3 +44,13 @@ describe 'Authentication', ->
         expect(@config.accessToken).to.be(data.accessToken)
         expect(@config.refreshToken).to.be(data.refreshToken)
         done()
+
+    it 'emits an authorized event', (done) ->
+      @client.auth.on 'authorized', (tokens) ->
+        expect(tokens).to.be.an('object')
+        expect(tokens.accessToken).to.be(@config.accessToken)
+        expect(tokens.refreshToken).to.be(@config.refreshToken)
+        done()
+
+      @client.auth.withPassword @username, @password
+

@@ -11,7 +11,10 @@ var LayerVault = require('layervault');
 var config = new LayerVault.Configuration(function () {
   this.oauthKey = 'abc123'
   this.oauthSecret = 'foobar'
-  this.accessToken = 'sloths567' // optional, if you have it
+
+  // optional, if you have it
+  this.accessToken = 'sloths567'
+  this.refreshToken = 'blahblah'
 });
 
 // Create the client
@@ -25,10 +28,19 @@ var client = new LayerVault.Client(config);
 ``` js
 // If configured without an access token, you will need
 // to authenticate and retrieve one. Here's the password flow:
-client.auth.withPassword('username', 'password', function (err, accessToken, refreshToken) {
+client.auth.withPassword('username', 'password', function (err, tokens) {
   // We are now logged in. The configuration is automatically updated
   // with the access token and refresh token. We can store them somewhere
   // persistent if needed.
+});
+```
+
+Because LayerVault uses OAuth refresh tokens, we need to watch out for their expiration and retrieve new tokens when they do. This is automatically handled internally in the library, and the new tokens are exposed via an event. This event is fired whenever authorization completes, so you can use it instead of providing a callback to `withPassword` like above.
+
+``` js
+client.auth.on('authorized', function (tokens) {
+  // Store our tokens somewhere persistent.
+  console.log(tokens.accessToken, tokens.refreshToken);
 });
 ```
 

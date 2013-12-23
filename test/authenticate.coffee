@@ -15,6 +15,8 @@ describe 'Authentication', ->
     before ->
       @username = 'sloth@layervault.com'
       @password = 'allhailthesloth'
+
+    beforeEach ->
       nock(@config.apiBase)
         .post('/oauth/token', {
           grant_type: 'password',
@@ -34,4 +36,12 @@ describe 'Authentication', ->
         expect(@config.refreshToken).to.not.be(null)
         expect(@config.accessToken).to.be(accessToken)
         expect(@config.refreshToken).to.be(refreshToken)
+        done()
+
+    it 'works with a promise', (done) ->
+      @client.auth.withPassword(@username, @password).then (data) =>
+        expect(data.accessToken).to.not.be(null)
+        expect(data.refreshToken).to.not.be(null)
+        expect(@config.accessToken).to.be(data.accessToken)
+        expect(@config.refreshToken).to.be(data.refreshToken)
         done()

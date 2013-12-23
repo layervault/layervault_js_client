@@ -32,6 +32,6 @@ module.exports = class Authenticate
         @config.accessToken = resp.access_token
         @config.refreshToken = resp.refresh_token
         
-        resolve accessToken: @config.accessToken, refreshToken: @config.refreshToken
+        resolve(accessToken: @config.accessToken, refreshToken: @config.refreshToken)
         cb(null, @config.accessToken, @config.refreshToken)
       , {auth: false, excludeApiPath: true})

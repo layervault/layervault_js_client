@@ -4,6 +4,14 @@
 
 NodeJS client for accessing the [LayerVault API](https://developers.layervault.com).
 
+## Installation
+
+The library is available on npm:
+
+```
+npm install layervault
+```
+
 ## Configuration
 
 ``` js

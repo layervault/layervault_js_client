@@ -232,3 +232,56 @@ describe 'File', ->
         @file.preview(w: 20).then (resp) ->
           expect(resp.toString()).to.be(@previewUrl)
           done()
+
+  describe.skip 'previews', ->
+    before ->
+      @previewUrls = ["https://layervault-preview.imgix.net/preview.jpg"]
+
+    describe 'without arguments', ->
+      beforeEach ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}#{@file.nodePath}/previews")
+          .reply(200, @previewUrls)
+
+      it 'does not error', (done) ->
+        @file.previews (err, resp) ->
+          expect(err).to.be(null)
+          done()
+
+      it 'returns an array response', (done) ->
+        @file.previews (err, resp) =>
+          expect(resp).to.eql(@previewUrls)
+          done()
+
+    describe 'with arguments', ->
+      beforeEach ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}#{@file.nodePath}/previews", {w: 20})
+          .reply(200, @previewUrls)
+
+      it 'does not error', (done) ->
+        @file.previews (err, resp) ->
+          expect(err).to.be(null)
+          done()
+
+      it 'returns an array response', (done) ->
+        @file.previews (err, resp) ->
+          expect(resp).to.eql(@previewUrls)
+          done()
+
+    describe 'with a promise', ->
+      beforeEach ->
+        nock(@config.apiBase)
+          .get("#{@config.apiPath}#{@file.nodePath}/previews")
+          .reply(200, @previewUrl)
+
+      it 'resolves', (done) ->
+        @file.previews().then (resp) ->
+          expect(resp.toString()).to.eql(@previewUrls)
+          done()
+
+      it 'resolves with arguments', (done) ->
+        @file.previews(w: 20).then (resp) ->
+          expect(resp).to.eql(@previewUrls)
+          done()
+

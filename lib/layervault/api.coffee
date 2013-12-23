@@ -27,7 +27,7 @@ module.exports = class API
     url = @apiUrl(endpoint, options)
     url += "?#{qs.stringify(data)}" unless Object.keys(data).length is 0
 
-    new RSVP.Promise (resolve, reject) =>
+    new RSVP.Promise (resolve, reject) ->
       needle.get url, {
         headers: headers
       }, (error, response, body) ->
@@ -50,8 +50,10 @@ module.exports = class API
     headers = {}
     headers["Authorization"] = "Bearer #{@config.accessToken}" unless options.auth is false
 
-    new RSVP.Promise (resolve, reject) =>
-      needle.post @apiUrl(endpoint, options), data, {
+    url = @apiUrl(endpoint, options)
+
+    new RSVP.Promise (resolve, reject) ->
+      needle.post url, data, {
         headers: headers
       }, (error, response, body) ->
         if 200 <= response.statusCode < 300
@@ -71,8 +73,10 @@ module.exports = class API
   delete: (endpoint, data = {}, cb = (->), options = {}) ->
     headers = { 'Authorization': "Bearer #{@config.accessToken}" }
 
-    new RSVP.Promise (resolve, reject) =>
-      needle.delete @apiUrl(endpoint, options), data, {
+    url = @apiUrl(endpoint, options)
+
+    new RSVP.Promise (resolve, reject) ->
+      needle.delete url, data, {
         headers: headers
       }, (error, response, body) ->
         if 200 <= response.statusCode < 300
@@ -92,8 +96,10 @@ module.exports = class API
   put: (endpoint, data = {}, cb = (->), options = {}) ->
     headers = { 'Authorization': "Bearer #{@config.accessToken}" }
 
-    new RSVP.Promise (resolve, reject) =>
-      needle.put @apiUrl(endpoint, options), data, {
+    url = @apiUrl(endpoint, options)
+
+    new RSVP.Promise (resolve, reject) ->
+      needle.put url, data, {
         headers: headers
       }, (error, response, body) ->
         if 200 <= response.statusCode < 300

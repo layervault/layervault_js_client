@@ -19,7 +19,7 @@ module.exports = class Client
   # Fetches information about the logged in user
   #
   # @param [Function] cb The finished callback
-  me: (cb) -> @api.get '/me', {}, cb.bind(@)
+  me: (cb = ->) -> @api.get '/me', {}, cb.bind(@)
 
   # Chooses an {Organization} to work with based on the name,
   # and instantiates it for you.

@@ -2,6 +2,7 @@
   "name": "layervault",
   "version": "0.1.2",
   "description": "LayerVault API client",
+  "main": "lib/layervault.js",
   "keywords": [
     "layervault",
     "design",

@@ -23,18 +23,21 @@ module.exports = class Node
       if Array.isArray(nodePath)
         components = []
         for node in nodePath
-          components.push if typeof node is "object" then encodeURIComponent(node.nodeName) else encodeURIComponent(node)
+          name = if typeof node is "object" then node.nodeName else node
+          components.push @formatNodePath(name)
 
         nodePath = components.join('/')
       else if typeof nodePath is "object"
-        nodePath = encodeURIComponent(nodePath.nodeName)
+        nodePath = @formatNodePath nodePath.nodeName
       else
-        nodePath = encodeURIComponent(nodePath)
+        nodePath = @formatNodePath nodePath
 
       @nodePath = parent.nodePath + "/#{nodePath}"
 
     @nodeName = @nodePath.match(/([^\/]+)$/)[1]
     @data = {}
+
+  formatNodePath: (path) -> path.split('/').map((p) -> encodeURIComponent(p)).join('/')
 
   # Assigns the data for this node and sets up getters/setters with
   # the proper options so that they are enumerable.

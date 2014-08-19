@@ -37,7 +37,7 @@ module.exports = class Node
     @nodeName = @nodePath.match(/([^\/]+)$/)[1]
     @data = {}
 
-  formatNodePath: (path) -> path.split('/').map((p) -> encodeURIComponent(p)).join('/')
+  formatNodePath: (path) -> path.toString().split('/').map((p) -> encodeURIComponent(p)).join('/')
 
   # Assigns the data for this node and sets up getters/setters with
   # the proper options so that they are enumerable.
